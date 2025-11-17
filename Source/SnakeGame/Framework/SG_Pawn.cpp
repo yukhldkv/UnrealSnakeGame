@@ -42,7 +42,8 @@ void ASG_Pawn::UpdateLocation(const Snake::Dim& InDim, int32 InCellSize, const F
     GridOrigin = InGridOrigin;
 
     auto* Viewport = GEngine->GameViewport->Viewport;
-    Viewport->ViewportResizedEvent.AddUObject(this, &ASG_Pawn::OnViewportResized);
+    Viewport->ViewportResizedEvent.Remove(ResizeHandle);
+    ResizeHandle = Viewport->ViewportResizedEvent.AddUObject(this, &ASG_Pawn::OnViewportResized);
 
 #if WITH_EDITOR
     OnViewportResized(Viewport, 0);
