@@ -1,0 +1,12 @@
+.vs
+*.sln
+DerivedDataCache/
+Intermediate/
+Saved/
+Binaries/
+Build/
+Documentation/
+Backup/
+UpgradeLog.html
+.vsconfig
+.idea/
