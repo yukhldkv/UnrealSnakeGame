@@ -16,6 +16,8 @@ double VerticalFOV(double HorFOVDegrees, double ViewportAspectHW)
         (2.0 * FMath::Atan(FMath::Tan(FMath::DegreesToRadians(HorFOVDegrees) * 0.5) * ViewportAspectHW));
 }
 
+constexpr double GridMargin = 2.0;
+
 }  // namespace
 
 ASG_Pawn::ASG_Pawn()
@@ -59,17 +61,18 @@ void ASG_Pawn::OnViewportResized(FViewport* Viewport, uint32 Val)
 
     if (ViewportAspect <= GridAspect)
     {
-        LocationZ = WorldWidth * 0.5 / HalfFOVTan(Camera->FieldOfView);
+        const double MarginWidth = (Dim.width + GridMargin) * CellSize;
+        LocationZ = MarginWidth * 0.5 / HalfFOVTan(Camera->FieldOfView);
     }
     else
     {
         check(ViewportAspect);
         const double VFOV = VerticalFOV(Camera->FieldOfView, 1.0 / ViewportAspect);
-        LocationZ = WorldHeight * 0.5 / HalfFOVTan(VFOV);
+        const double MarginHeight = (Dim.height + GridMargin) * CellSize;
+        LocationZ = MarginHeight * 0.5 / HalfFOVTan(VFOV);
     }
 
-    double CameraHeightMultiplier = 1.15;
     const FVector NewPawnLocation =
-        GridOrigin.GetLocation() + FVector(0.5 * WorldHeight, 0.5 * WorldWidth, CameraHeightMultiplier * LocationZ);
+        GridOrigin.GetLocation() + FVector(0.5 * WorldHeight, 0.5 * WorldWidth, LocationZ);
     SetActorLocation(NewPawnLocation);
 }
