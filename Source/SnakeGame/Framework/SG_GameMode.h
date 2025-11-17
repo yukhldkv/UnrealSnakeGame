@@ -43,6 +43,9 @@ private:
 
     uint32 ColorTableIndex{0};
 
+    UFUNCTION(Exec, Category = "Console command")
+    void NextColor();
+
     void FindFog();
     void UpdateColors();
 };
