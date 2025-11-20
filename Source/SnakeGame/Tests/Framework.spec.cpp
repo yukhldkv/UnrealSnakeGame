@@ -7,6 +7,7 @@
 #include "Tests/Utils/TestUtils.h"
 #include "Framework/SG_GameMode.h"
 #include "Framework/SG_Pawn.h"
+#include "Misc/PathViews.h"
 
 BEGIN_DEFINE_SPEC(FSnakeFramework, "Snake",
     EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::HighPriority)
@@ -18,14 +19,31 @@ void FSnakeFramework::Define()
     using namespace LifeExe::Test;
 
     Describe("Framework", [this]() { //
+        
+        It("GameMapShouldExist", [this]()
+        {
+                const TArray<FString> SnakeGameMaps = {"DefaultLevel"};
+                TArray<FString> AllProjectMaps;
+                IFileManager::Get().FindFilesRecursive(AllProjectMaps, *FPaths::ProjectContentDir(), TEXT("*.umap"), true, false);
+                
+                for (const auto& SnakeGameMap : SnakeGameMaps)
+                {
+                    const bool SnakeMapExists = AllProjectMaps.ContainsByPredicate([&](const FString& ProjectMap) 
+                        {
+                            FStringView OutPath, OutName, OutExtension;
+                            FPathViews::Split(FStringView(ProjectMap), OutPath, OutName, OutExtension);
+                            return SnakeGameMap.Equals(FString(OutName));
+                        });
+                    TestTrueExpr(SnakeMapExists);
+                }
+        });
+    });
+
+    Describe("Framework", [this]() { //
         BeforeEach([this]()
         {
            AutomationOpenMap("GameLevel");
             World = GetTestGameWorld();
-        });
-        It("GameMapShouldExist", [this]()
-        {
-            TestNotNull("World Exists", World);
         });
         It("ClassesMightBeSetupCorrectly", [this]()
         {

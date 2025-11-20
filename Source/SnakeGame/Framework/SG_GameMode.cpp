@@ -36,7 +36,7 @@ void ASG_GameMode::StartPlay()
     check(Game->grid().IsValid());
     Pawn->UpdateLocation(Game->grid()->dim(), CellSize, GridOrigin);
 
-    // 
+    //
     FindFog();
 
     // update colors
@@ -47,7 +47,16 @@ void ASG_GameMode::StartPlay()
     UpdateColors();
 }
 
-void ASG_GameMode::FindFog() 
+void ASG_GameMode::NextColor()
+{
+    if (ColorsTable)
+    {
+        ColorTableIndex = (ColorTableIndex + 1) % ColorsTable->GetRowNames().Num();
+        UpdateColors();
+    }
+}
+
+void ASG_GameMode::FindFog()
 {
     TArray<AActor*> Fogs;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), AExponentialHeightFog::StaticClass(), Fogs);
@@ -70,7 +79,7 @@ void ASG_GameMode::UpdateColors()
         if (Fog && Fog->GetComponent())
         {
             Fog->GetComponent()->SkyAtmosphereAmbientContributionColorScale = ColorSet->SkyAtmosphereColor;
-            Fog->MarkComponentsRenderStateDirty(); // mark render state to update color on the next frame
+            Fog->MarkComponentsRenderStateDirty();  // mark render state to update color on the next frame
         }
     }
 }

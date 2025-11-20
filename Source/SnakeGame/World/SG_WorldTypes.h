@@ -7,7 +7,7 @@
 #include "SG_WorldTypes.generated.h"
 
 USTRUCT(BlueprintType)
-struct FSnakeColors: public FTableRowBase
+struct FSnakeColors : public FTableRowBase
 {
     GENERATED_BODY()
 
