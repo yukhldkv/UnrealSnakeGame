@@ -73,7 +73,6 @@ void ASG_Pawn::OnViewportResized(FViewport* Viewport, uint32 Val)
         LocationZ = MarginHeight * 0.5 / HalfFOVTan(VFOV);
     }
 
-    const FVector NewPawnLocation =
-        GridOrigin.GetLocation() + FVector(0.5 * WorldHeight, 0.5 * WorldWidth, LocationZ);
+    const FVector NewPawnLocation = GridOrigin.GetLocation() + FVector(0.5 * WorldHeight, 0.5 * WorldWidth, LocationZ);
     SetActorLocation(NewPawnLocation);
 }
