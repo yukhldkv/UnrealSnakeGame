@@ -33,7 +33,7 @@ protected:
     UDataTable* ColorsTable;
 
 private:
-    TUniquePtr<Snake::Game> Game;
+    TUniquePtr<SnakeGame::Game> Game;
 
     UPROPERTY()
     ASG_Grid* GridVisual;

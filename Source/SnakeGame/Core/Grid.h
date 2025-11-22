@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Types.h"
 
-namespace Snake
+namespace SnakeGame
 {
 class Grid
 {
@@ -26,4 +26,4 @@ private:
     void printDebug();
     FORCEINLINE uint32 posToIndex(uint32 x, uint32 y) const;
 };
-}  // namespace Snake
+}  // namespace SnakeGame

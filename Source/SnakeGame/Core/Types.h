@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-namespace Snake
+namespace SnakeGame
 {
 struct Dim
 {
@@ -25,4 +25,4 @@ struct Settings
     Dim gridDims;
 };
 
-}  // namespace Snake
+}  // namespace SnakeGame
