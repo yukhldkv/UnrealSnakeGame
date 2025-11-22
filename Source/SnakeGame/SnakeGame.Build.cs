@@ -1,4 +1,4 @@
-// Snake Game Unreal Engine Project
+// Snake Game. Copyright Yura Kholodkov. All Rights Reserved.
 
 using UnrealBuildTool;
 

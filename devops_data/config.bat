@@ -33,7 +33,7 @@ set dirsToRemove=Intermediate DerivedDataCache Saved Binaries .vs Build Document
 set filesToRemove=*.sln
 
 rem Target generation params
-set COPYRIGHT_LINE=// Snake Game Unreal Engine Project
+set COPYRIGHT_LINE=// Snake Game. Copyright Yura Kholodkov. All Rights Reserved.
 set EXTRA_MODULE_NAMES="%ProjectPureName%"
 set TargetTemplateFilePath=%ProjectRoot%\devops_ue\targets\GameModule.Target.cs.template
 
