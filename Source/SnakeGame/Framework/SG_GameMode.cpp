@@ -10,12 +10,22 @@
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+ASG_GameMode::ASG_GameMode()
+{
+    PrimaryActorTick.bCanEverTick = true;
+}
+
 void ASG_GameMode::StartPlay()
 {
     Super::StartPlay();
 
     // init core game
-    const SnakeGame::Settings GS{GridDims.X, GridDims.Y};
+    SnakeGame::Settings GS;
+    GS.gridDims = SnakeGame::Dim{GridDims.X, GridDims.Y};
+    GS.snake.defaultSize = SnakeDefaultSize;
+    GS.gameSpeed = GameSpeed;
+    GS.snake.startPosition = SnakeGame::Position{GridDims.X / 2, GridDims.Y / 2};
+
     Game = MakeUnique<SnakeGame::Game>(GS);
     check(Game.IsValid());
 
@@ -81,5 +91,15 @@ void ASG_GameMode::UpdateColors()
             Fog->GetComponent()->SkyAtmosphereAmbientContributionColorScale = ColorSet->SkyAtmosphereColor;
             Fog->MarkComponentsRenderStateDirty();  // mark render state to update color on the next frame
         }
+    }
+}
+
+void ASG_GameMode::Tick(float DeltaSeconds)
+{
+    Super::Tick(DeltaSeconds);
+
+    if (Game.IsValid())
+    {
+        Game->update(DeltaSeconds, SnakeInput);
     }
 }

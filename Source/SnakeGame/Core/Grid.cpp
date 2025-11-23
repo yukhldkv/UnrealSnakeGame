@@ -51,6 +51,7 @@ void Grid::printDebug()
             {
                 case CellType::Empty: symbol = TEXT('0'); break;
                 case CellType::Wall: symbol = TEXT('*'); break;
+                case CellType::Snake: symbol = TEXT('+'); break;
                 default: break;
             }
             line.AppendChar(symbol).AppendChar(' ');
@@ -60,7 +61,41 @@ void Grid::printDebug()
 #endif
 }
 
+void Grid::freeCellsByType(CellType cellType) 
+{
+    for (auto& cell: m_cells)
+    {
+        if (cell == cellType)
+        {
+            cell = CellType::Empty;
+        }
+    }
+}
+
+void Grid::update(const TPositionPtr* links, CellType cellType)
+{
+    freeCellsByType(cellType);
+
+    auto* link = links;
+    while (link)
+    {
+        const auto index = posToIndex(link->GetValue());
+        m_cells[index] = cellType;
+        link = link->GetNextNode();
+    }
+}
+
+bool Grid::hitTest(const Position& position, CellType cellType) const
+{
+    return m_cells[posToIndex(position)] == cellType;
+}
+
 uint32 Grid::posToIndex(uint32 x, uint32 y) const
 {
     return y * c_dim.width + x;
+}
+
+uint32 Grid::posToIndex(const Position& position) const
+{
+    return posToIndex(position.x, position.y);
 }
