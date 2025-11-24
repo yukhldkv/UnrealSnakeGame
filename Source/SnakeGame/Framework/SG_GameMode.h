@@ -10,6 +10,7 @@
 
 class ASG_Grid;
 class AExponentialHeightFog;
+class ASG_Snake;
 
 UCLASS()
 class SNAKEGAME_API ASG_GameMode : public AGameModeBase
@@ -37,6 +38,9 @@ protected:
     UPROPERTY(EditDefaultsOnly)
     TSubclassOf<ASG_Grid> GridVisualClass;
 
+    UPROPERTY(EditDefaultsOnly)
+    TSubclassOf<ASG_Snake> SnakeVisualClass;
+
     UPROPERTY(EditDefaultsOnly, Category = "Design")
     UDataTable* ColorsTable;
 
@@ -47,6 +51,9 @@ private:
 
     UPROPERTY()
     ASG_Grid* GridVisual;
+
+    UPROPERTY()
+    ASG_Snake* SnakeVisual;
 
     UPROPERTY()
     AExponentialHeightFog* Fog;

@@ -9,6 +9,7 @@
 #include "Engine/ExponentialHeightFog.h"
 #include "Components/ExponentialHeightFogComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "World/SG_Snake.h"
 
 ASG_GameMode::ASG_GameMode()
 {
@@ -36,6 +37,11 @@ void ASG_GameMode::StartPlay()
     check(GridVisual);
     GridVisual->SetModel(Game->grid(), CellSize);
     GridVisual->FinishSpawning(GridOrigin);
+
+    // init world snake
+    SnakeVisual = GetWorld()->SpawnActorDeferred<ASG_Snake>(SnakeVisualClass, GridOrigin);
+    SnakeVisual->SetModel(Game->snake(), CellSize, Game->grid()->dim());
+    SnakeVisual->FinishSpawning(GridOrigin);
 
     // set pawn location fitting grid in viewport
     auto* PC = GetWorld()->GetFirstPlayerController();
