@@ -20,5 +20,6 @@ public:
 
 private:
     TSnakeList m_links;
+    Input m_lastInput{1, 0};
 };
 }  // namespace SnakeGame

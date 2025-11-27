@@ -6,11 +6,14 @@
 #include "GameFramework/GameModeBase.h"
 #include "Core/Game.h"
 #include "Engine/DataTable.h"
+#include "InputActionValue.h"
 #include "SG_GameMode.generated.h"
 
 class ASG_Grid;
 class AExponentialHeightFog;
 class ASG_Snake;
+class UInputAction;
+class UInputMappingContext;
 
 UCLASS()
 class SNAKEGAME_API ASG_GameMode : public AGameModeBase
@@ -42,7 +45,16 @@ protected:
     TSubclassOf<ASG_Snake> SnakeVisualClass;
 
     UPROPERTY(EditDefaultsOnly, Category = "Design")
-    UDataTable* ColorsTable;
+    TObjectPtr<UDataTable> ColorsTable;
+
+    UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
+    TObjectPtr<UInputAction> MoveForwardInputAction;
+
+    UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
+    TObjectPtr<UInputAction> MoveRightInputAction;
+
+    UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
+    TObjectPtr<UInputMappingContext> InputMapping;
 
 private:
     TUniquePtr<SnakeGame::Game> Game;
@@ -62,5 +74,14 @@ private:
     void NextColor();
 
     void FindFog();
+
+    /**
+     * Updated Grid and ExponentialFog colours
+     * according to the ColorsTable property
+     */
     void UpdateColors();
+
+    void SetupInput();
+    void OnMoveForward(const FInputActionValue& Value);
+    void OnMoveRight(const FInputActionValue& Value);
 };
