@@ -25,6 +25,10 @@ public:
 private:
     const Dim c_dim;
     TArray<CellType> m_cells;
+    TMap<CellType, TArray<uint32>> m_indByType = {
+        {CellType::Snake, {}},  //
+        {CellType::Wall, {}},   //
+    };
 
     void initWalls();
     FORCEINLINE uint32 posToIndex(uint32 x, uint32 y) const;
