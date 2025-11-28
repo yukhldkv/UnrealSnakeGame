@@ -24,6 +24,7 @@ public:
     ASG_GameMode();
     virtual void StartPlay() override;
     virtual void Tick(float DeltaSeconds) override;
+    SnakeGame::Settings MakeSettings() const;
 
 protected:
     UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100"), Category = "Settings")
@@ -52,6 +53,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
     TObjectPtr<UInputAction> MoveRightInputAction;
+
+    UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
+    TObjectPtr<UInputAction> ResetInputAction;
 
     UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
     TObjectPtr<UInputMappingContext> InputMapping;
@@ -84,4 +88,5 @@ private:
     void SetupInput();
     void OnMoveForward(const FInputActionValue& Value);
     void OnMoveRight(const FInputActionValue& Value);
+    void OnGameReset(const FInputActionValue& Value);
 };
