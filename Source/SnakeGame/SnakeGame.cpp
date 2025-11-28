@@ -1,4 +1,4 @@
-// Snake Game Unreal Engine Project
+// Snake Game. Copyright Yura Kholodkov. All Rights Reserved.
 
 #include "SnakeGame.h"
 #include "Modules/ModuleManager.h"

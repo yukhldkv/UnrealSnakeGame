@@ -1,4 +1,4 @@
-// Snake Game Unreal Engine Project
+// Snake Game. Copyright Yura Kholodkov. All Rights Reserved.
 
 using UnrealBuildTool;
 
@@ -8,7 +8,7 @@ public class SnakeGame : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "EnhancedInput" });
 
         PublicIncludePaths.AddRange(new string[] { "SnakeGame" });
 

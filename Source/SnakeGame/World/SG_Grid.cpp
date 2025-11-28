@@ -1,4 +1,4 @@
-// Snake Game Unreal Engine Project
+// Snake Game. Copyright Yura Kholodkov. All Rights Reserved.
 
 #include "World/SG_Grid.h"
 #include "Core/Grid.h"
@@ -26,13 +26,13 @@ void ASG_Grid::BeginPlay()
     Super::BeginPlay();
 }
 
-void ASG_Grid::SetModel(const TSharedPtr<Snake::Grid>& Grid, uint32 InCellSize)
+void ASG_Grid::SetModel(const TSharedPtr<SnakeGame::Grid>& Grid, uint32 InCellSize)
 {
-    if (!Grid.IsValid())
+    if (!Grid)
     {
         UE_LOG(LogWorldGrid, Fatal, TEXT("Grid is null, game aborted"))
     }
-    GridDim = Grid.Get()->dim();
+    GridDim = Grid->dim();
     CellSize = InCellSize;
     WorldWidth = GridDim.width * CellSize;
     WorldHeight = GridDim.height * CellSize;
@@ -43,7 +43,8 @@ void ASG_Grid::SetModel(const TSharedPtr<Snake::Grid>& Grid, uint32 InCellSize)
     const auto Size = Box.GetSize();
 
     check(Size.X);
-    check(Size.Y) GridMesh->SetRelativeScale3D(FVector(WorldHeight / Size.X, WorldWidth / Size.Y, 1.0));
+    check(Size.Y);
+    GridMesh->SetRelativeScale3D(FVector(WorldHeight / Size.X, WorldWidth / Size.Y, 1.0));
     GridMesh->SetRelativeLocation(0.5 * FVector(WorldHeight, WorldWidth, -Size.Z));
 
     // setup material

@@ -1,4 +1,4 @@
-// Snake Game Unreal Engine Project
+// Snake Game. Copyright Yura Kholodkov. All Rights Reserved.
 
 #pragma once
 
@@ -22,4 +22,10 @@ struct FSnakeColors : public FTableRowBase
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     FLinearColor SkyAtmosphereColor;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    FLinearColor SnakeHeadColor;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    FLinearColor SnakeLinkColor;
 };
