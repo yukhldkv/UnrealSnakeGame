@@ -7,7 +7,8 @@ namespace
 {
 FVector LinkPositionToVector(const SnakeGame::Position& Position, uint32 CellSize, const SnakeGame::Dim& Dims)
 {
-    return FVector((Dims.height - 1 - Position.y) * CellSize, Position.x * CellSize, 0.0)  // position y needs to be inverted due to the way UE handles coordinate system
+    return FVector((Dims.height - 1 - Position.y) * CellSize, Position.x * CellSize,
+               0.0)                    // position y needs to be inverted due to the way UE handles coordinate system
            + FVector(CellSize * 0.5);  // shift snake location so that it fits the grid instead of moving on the gridlines
 }
 }  // namespace
@@ -24,7 +25,7 @@ void ASG_Snake::SetModel(const TSharedPtr<SnakeGame::Snake>& InSnake, uint32 InC
     Dims = InDims;
 }
 
-void ASG_Snake::UpdateColors(const FSnakeColors& Colors) 
+void ASG_Snake::UpdateColors(const FSnakeColors& Colors)
 {
     for (int32 i = 0; i < SnakeLinks.Num(); ++i)
     {

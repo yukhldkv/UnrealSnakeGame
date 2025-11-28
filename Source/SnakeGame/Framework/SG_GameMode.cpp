@@ -164,6 +164,6 @@ SnakeGame::Settings ASG_GameMode::MakeSettings() const
     GS.gridDims = SnakeGame::Dim{GridDims.X, GridDims.Y};
     GS.snake.defaultSize = SnakeDefaultSize;
     GS.gameSpeed = GameSpeed;
-    GS.snake.startPosition = SnakeGame::Position{GridDims.X / 2 + 1, GridDims.Y / 2 + 1}; // @todo: proper way to handle +1
+    GS.snake.startPosition = SnakeGame::Position{GridDims.X / 2 + 1, GridDims.Y / 2 + 1};  // @todo: proper way to handle +1
     return GS;
 }

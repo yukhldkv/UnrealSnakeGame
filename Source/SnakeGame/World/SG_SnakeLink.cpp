@@ -16,7 +16,7 @@ ASG_SnakeLink::ASG_SnakeLink()
     LinkMesh->SetupAttachment(Origin);
 }
 
-void ASG_SnakeLink::UpdateColors(const FLinearColor& Color) 
+void ASG_SnakeLink::UpdateColors(const FLinearColor& Color)
 {
     if (auto* LinkMaterial = LinkMesh->CreateAndSetMaterialInstanceDynamic(0))
     {
@@ -24,7 +24,7 @@ void ASG_SnakeLink::UpdateColors(const FLinearColor& Color)
     }
 }
 
-void ASG_SnakeLink::UpdateScale(uint32 CellSize) 
+void ASG_SnakeLink::UpdateScale(uint32 CellSize)
 {
     // scale mesh
     check(LinkMesh->GetStaticMesh());

@@ -25,7 +25,7 @@ public:
     TSharedPtr<Snake> snake() const { return m_snake; }
 
     void update(float deltaSeconds, const Input& input);
-    void move(const Input& input);    
+    void move(const Input& input);
 
 private:
     const Settings c_settings;

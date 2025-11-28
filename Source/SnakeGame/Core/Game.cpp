@@ -42,7 +42,7 @@ void Game::updateGrid()
 bool Game::updateTime(float deltaSeconds)
 {
     m_moveSeconds += deltaSeconds;
-    auto invertedGameSpeed = 1 / c_settings.gameSpeed; 
+    auto invertedGameSpeed = 1 / c_settings.gameSpeed;
     if (m_moveSeconds < invertedGameSpeed) return false;
     m_moveSeconds = 0.0f;
     return true;
@@ -50,6 +50,6 @@ bool Game::updateTime(float deltaSeconds)
 
 bool Game::died() const
 {
-    return m_grid->hitTest(m_snake->head(), CellType::Wall) || //
+    return m_grid->hitTest(m_snake->head(), CellType::Wall) ||  //
            m_grid->hitTest(m_snake->head(), CellType::Snake);
 }

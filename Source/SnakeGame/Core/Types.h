@@ -62,7 +62,7 @@ using TPositionPtr = TDoubleLinkedList<Position>::TDoubleLinkedListNode;
 class TSnakeList : public TDoubleLinkedList<Position>
 {
 public:
-    void Movetail(TPositionPtr* Tail, TPositionPtr* Head, const Position& Pos) 
+    void Movetail(TPositionPtr* Tail, TPositionPtr* Head, const Position& Pos)
     {
         // @todo: make real movement of tail node without remove/insert
         RemoveNode(Tail);

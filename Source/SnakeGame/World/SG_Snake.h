@@ -27,7 +27,6 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     TSubclassOf<AActor> SnakeHeadClass;
 
-    
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     TSubclassOf<AActor> SnakeLinkClass;
 
