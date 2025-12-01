@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Misc/AutomationTest.h"
 #include "Core/Game.h"
+#include "Core/Grid.h"
 
 DEFINE_SPEC(
     FSnakeGame, "Snake", EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::HighPriority)
@@ -16,7 +17,9 @@ void FSnakeGame::Define()
     Describe("CoreGame", [this]() { //
         It("GridShouldExist", [this]()
     {
-        const Settings GS{10, 10};
+        Settings GS;
+        GS.gridDims = {10, 10};
+        GS.snake.startPosition = Grid::center(GS.gridDims.width, GS.gridDims.height);
         const auto CoreGame = Game(GS);
         TestTrueExpr(CoreGame.grid().IsValid());
     }); });

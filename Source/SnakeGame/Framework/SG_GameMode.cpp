@@ -98,7 +98,7 @@ void ASG_GameMode::UpdateColors()
         {
             Fog->GetComponent()->SkyAtmosphereAmbientContributionColorScale = ColorSet->SkyAtmosphereColor;
             Fog->MarkComponentsRenderStateDirty();  // mark render state to update color on the next frame
-        }
+        } 
     }
 }
 
@@ -106,7 +106,7 @@ void ASG_GameMode::SetupInput()
 {
     if (!GetWorld()) return;
 
-    if (auto* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController()))
+    if (auto* PC = GetWorld()->GetFirstPlayerController())
     {
         if (auto* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
         {
@@ -123,16 +123,16 @@ void ASG_GameMode::SetupInput()
 
 void ASG_GameMode::OnMoveForward(const FInputActionValue& Value)
 {
-    const FVector2D InputValue = Value.Get<FVector2D>();
-    if (InputValue.X == 0.0) return;
-    SnakeInput = SnakeGame::Input{0, static_cast<int8>(InputValue.X)};
+    const float InputValue = Value.Get<float>();
+    if (InputValue == 0.0f) return;
+    SnakeInput = SnakeGame::Input{0, static_cast<int8>(InputValue)};
 }
 
 void ASG_GameMode::OnMoveRight(const FInputActionValue& Value)
 {
-    const FVector2D InputValue = Value.Get<FVector2D>();
-    if (InputValue.X == 0.0) return;
-    SnakeInput = SnakeGame::Input{static_cast<int8>(InputValue.X), 0};
+    const float InputValue = Value.Get<float>();
+    if (InputValue == 0.0f) return;
+    SnakeInput = SnakeGame::Input{static_cast<int8>(InputValue), 0};
 }
 
 void ASG_GameMode::OnGameReset(const FInputActionValue& Value)
@@ -164,6 +164,6 @@ SnakeGame::Settings ASG_GameMode::MakeSettings() const
     GS.gridDims = SnakeGame::Dim{GridDims.X, GridDims.Y};
     GS.snake.defaultSize = SnakeDefaultSize;
     GS.gameSpeed = GameSpeed;
-    GS.snake.startPosition = SnakeGame::Position{GridDims.X / 2 + 1, GridDims.Y / 2 + 1};  // @todo: proper way to handle +1
+    GS.snake.startPosition = SnakeGame::Grid::center(GridDims.X, GridDims.Y);
     return GS;
 }
