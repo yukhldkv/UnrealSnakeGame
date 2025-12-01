@@ -143,7 +143,7 @@ void ASG_GameMode::OnGameReset(const FInputActionValue& Value)
         check(Game.IsValid());
         GridVisual->SetModel(Game->grid(), CellSize);
         SnakeVisual->SetModel(Game->snake(), CellSize, Game->grid()->dim());
-        SnakeInput = SnakeGame::Input{1, 0};
+        SnakeInput = SnakeGame::Input{SnakeGame::Input::Default};
         NextColor();
     }
 }

@@ -24,6 +24,8 @@ struct Position
         y += rhs.y;
         return *this;
     }
+
+    static const Position Zero;
 };
 
 struct Input
@@ -35,6 +37,8 @@ struct Input
     {
         return (x == -rhs.x && x != 0) || (y == -rhs.y && y != 0);
     }
+
+    static const Input Default;
 };
 
 enum class CellType
@@ -51,7 +55,7 @@ struct Settings
     struct Snake
     {
         uint32 defaultSize{4};
-        Position startPosition{0, 0};
+        Position startPosition{Position::Zero};
     } snake;
 
     float gameSpeed{1.0f};
