@@ -2,16 +2,7 @@
 
 #include "World/SG_Snake.h"
 #include "World/SG_SnakeLink.h"
-
-namespace
-{
-FVector LinkPositionToVector(const SnakeGame::Position& Position, uint32 CellSize, const SnakeGame::Dim& Dims)
-{
-    return FVector((Dims.height - 1 - Position.y) * CellSize, Position.x * CellSize,
-               0.0)                    // position y needs to be inverted due to the way UE handles coordinate system
-           + FVector(CellSize * 0.5);  // shift snake location so that it fits the grid instead of moving on the gridlines
-}
-}  // namespace
+#include "World/SG_WorldUtils.h"
 
 ASG_Snake::ASG_Snake()
 {
@@ -45,7 +36,7 @@ void ASG_Snake::BeginPlay()
     for (const auto& Link : Links)
     {
         const bool IsHead = i == 0;
-        const FTransform Transform = FTransform(LinkPositionToVector(Link, CellSize, Dims));
+        const FTransform Transform = FTransform(SnakeGame::WorldUtils::LinkPositionToVector(Link, CellSize, Dims));
         auto* LinkActor = GetWorld()->SpawnActorDeferred<ASG_SnakeLink>(IsHead ? SnakeHeadClass : SnakeLinkClass, Transform);
         LinkActor->UpdateScale(CellSize);
         LinkActor->FinishSpawning(Transform);
@@ -65,7 +56,7 @@ void ASG_Snake::Tick(float DeltaTime)
 
     for (auto* LinkActor : SnakeLinks)
     {
-        LinkActor->SetActorLocation(LinkPositionToVector(LinkPtr->GetValue(), CellSize, Dims));
+        LinkActor->SetActorLocation(SnakeGame::WorldUtils::LinkPositionToVector(LinkPtr->GetValue(), CellSize, Dims));
         LinkPtr = LinkPtr->GetNextNode();
     }
 }
