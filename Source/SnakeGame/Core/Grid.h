@@ -20,9 +20,12 @@ public:
     void printDebug();
     void freeCellsByType(CellType cellType);
     void update(const TPositionPtr* links, CellType cellType);
+    void update(const Position& position, CellType cellType);
     bool hitTest(const Position& position, CellType cellType) const;
 
     static Position center(uint32 width, uint32 height) { return Position(width / 2 + 1, height / 2 + 1); }
+
+    Position randomEmptyPosition() const;
 
 private:
     const Dim c_dim;
@@ -30,10 +33,13 @@ private:
     TMap<CellType, TArray<uint32>> m_indByType = {
         {CellType::Snake, {}},  //
         {CellType::Wall, {}},   //
+        {CellType::Food, {}}    //
     };
 
     void initWalls();
     FORCEINLINE uint32 posToIndex(uint32 x, uint32 y) const;
     FORCEINLINE uint32 posToIndex(const Position& position) const;
+    FORCEINLINE Position indexToPos(uint32 index) const;
+    void updateInternal(const Position& position, CellType cellType);
 };
 }  // namespace SnakeGame
