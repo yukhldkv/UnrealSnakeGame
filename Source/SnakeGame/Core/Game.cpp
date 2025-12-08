@@ -12,6 +12,8 @@ using namespace SnakeGame;
 Game::Game(const Settings& settings) : c_settings(settings)
 {
     m_grid = MakeShared<Grid>(settings.gridDims);
+    checkf(m_grid->dim().width / 2 >= settings.snake.defaultSize, TEXT("Snake initial length [%i] doesn't fit grid width [%i]"),
+        settings.snake.defaultSize, m_grid->dim().width);
     m_snake = MakeShared<Snake>(settings.snake);
     m_food = MakeShared<Food>();
 
@@ -28,6 +30,7 @@ void Game::update(float deltaSeconds, const Input& input)
         m_gameOver = true;
         UE_LOG(LogGame, Display, TEXT("------------------ GAME OVER ------------------"));
         UE_LOG(LogGame, Display, TEXT("------------------ SCORE: %i------------------"), m_score);
+        return;
     }
 
     if (foodTaken())
