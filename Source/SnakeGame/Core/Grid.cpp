@@ -134,7 +134,7 @@ uint32 Grid::posToIndex(const Position& position) const
     return posToIndex(position.x, position.y);
 }
 
-Position Grid::indexToPos(uint32 index) const 
+Position Grid::indexToPos(uint32 index) const
 {
     return Position(index % c_dim.width, index / c_dim.width);
 }

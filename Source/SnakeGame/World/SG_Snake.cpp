@@ -14,19 +14,14 @@ void ASG_Snake::SetModel(const TSharedPtr<SnakeGame::Snake>& InSnake, uint32 InC
     Snake = InSnake;
     CellSize = InCellSize;
     Dims = InDims;
-}
 
-void ASG_Snake::UpdateColors(const FSnakeColors& Colors)
-{
-    for (int32 i = 0; i < SnakeLinks.Num(); ++i)
+    // remove old actors upon resetting the game
+    for (auto* LinkActor : SnakeLinks)
     {
-        SnakeLinks[i]->UpdateColors(i == 0 ? Colors.SnakeHeadColor : Colors.SnakeLinkColor);
+        // upon starting the game for the first time this cycle is not called, since array is empty at this point
+        LinkActor->Destroy();
     }
-}
-
-void ASG_Snake::BeginPlay()
-{
-    Super::BeginPlay();
+    SnakeLinks.Empty();
 
     if (!Snake.IsValid() || !GetWorld()) return;
 
@@ -45,6 +40,16 @@ void ASG_Snake::BeginPlay()
     }
 }
 
+void ASG_Snake::UpdateColors(const FSnakeColors& Colors)
+{
+    SnakeLinkColor = Colors.SnakeLinkColor;
+
+    for (int32 i = 0; i < SnakeLinks.Num(); ++i)
+    {
+        SnakeLinks[i]->UpdateColors(i == 0 ? Colors.SnakeHeadColor : Colors.SnakeLinkColor);
+    }
+}
+
 void ASG_Snake::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
@@ -57,6 +62,18 @@ void ASG_Snake::Tick(float DeltaTime)
     for (auto* LinkActor : SnakeLinks)
     {
         LinkActor->SetActorLocation(SnakeGame::WorldUtils::LinkPositionToVector(LinkPtr->GetValue(), CellSize, Dims));
+        LinkPtr = LinkPtr->GetNextNode();
+    }
+
+    // add links after eating food
+    while (LinkPtr)
+    {
+        const FTransform Transform = FTransform(SnakeGame::WorldUtils::LinkPositionToVector(LinkPtr->GetValue(), CellSize, Dims));
+        auto* LinkActor = GetWorld()->SpawnActorDeferred<ASG_SnakeLink>(SnakeLinkClass, Transform);
+        LinkActor->UpdateScale(CellSize);
+        LinkActor->UpdateColors(SnakeLinkColor);
+        LinkActor->FinishSpawning(Transform);
+        SnakeLinks.Add(LinkActor);
         LinkPtr = LinkPtr->GetNextNode();
     }
 }

@@ -35,12 +35,15 @@ private:
     TSharedPtr<Grid> m_grid;
     TSharedPtr<Snake> m_snake;
     TSharedPtr<Food> m_food;
+
     float m_moveSeconds{0.0f};
+    bool m_gameOver{false};
+    uint32 m_score{0};
 
     void updateGrid();
     bool updateTime(float deltaSeconds);
-    bool m_gameOver{false};
     bool died() const;
     void generateFood();
+    bool foodTaken() const;
 };
 }  // namespace SnakeGame
