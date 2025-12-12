@@ -15,6 +15,7 @@ struct Dim
 struct Position
 {
     Position(uint32 inX, uint32 inY) : x(inX), y(inY) {}
+    Position(const Position& position = Position::Zero) : x(position.x), y(position.y) {}
     uint32 x;
     uint32 y;
 

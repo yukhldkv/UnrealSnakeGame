@@ -25,7 +25,7 @@ public:
 
     static Position center(uint32 width, uint32 height) { return Position(width / 2 + 1, height / 2 + 1); }
 
-    Position randomEmptyPosition() const;
+    bool randomEmptyPosition(Position& position) const;
 
 private:
     const Dim c_dim;

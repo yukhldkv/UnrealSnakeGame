@@ -70,8 +70,18 @@ bool Game::died() const
 
 void SnakeGame::Game::generateFood()
 {
-    m_food->setPosition(m_grid->randomEmptyPosition());
-    m_grid->update(m_food->position(), CellType::Food);
+    Position foodPosition;
+    if (m_grid->randomEmptyPosition(foodPosition))
+    {
+        m_food->setPosition(foodPosition);
+        m_grid->update(m_food->position(), CellType::Food);
+    }
+    else
+    {
+        m_gameOver = true;
+        UE_LOG(LogGame, Display, TEXT("------------------ GAME COMPLETED ------------------"));
+        UE_LOG(LogGame, Display, TEXT("------------------ SCORE: %i------------------"), m_score);
+    }
 }
 
 bool SnakeGame::Game::foodTaken() const
