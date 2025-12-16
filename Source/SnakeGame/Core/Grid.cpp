@@ -54,6 +54,7 @@ void Grid::printDebug()
                 case CellType::Empty: symbol = TEXT('0'); break;
                 case CellType::Wall: symbol = TEXT('*'); break;
                 case CellType::Snake: symbol = TEXT('+'); break;
+                case CellType::Food: symbol = TEXT('F'); break;
                 default: break;
             }
             line.AppendChar(symbol).AppendChar(' ');
@@ -80,16 +81,53 @@ void Grid::update(const TPositionPtr* links, CellType cellType)
     auto* link = links;
     while (link)
     {
-        const auto index = posToIndex(link->GetValue());
-        m_cells[index] = cellType;
-        m_indByType[cellType].Add(index);
+        updateInternal(link->GetValue(), cellType);
         link = link->GetNextNode();
     }
+}
+
+void SnakeGame::Grid::update(const Position& position, CellType cellType)
+{
+    freeCellsByType(cellType);
+    updateInternal(position, cellType);
+}
+
+void Grid::updateInternal(const Position& position, CellType cellType)
+{
+    const auto index = posToIndex(position);
+    m_cells[index] = cellType;
+    m_indByType[cellType].Add(index);
 }
 
 bool Grid::hitTest(const Position& position, CellType cellType) const
 {
     return m_cells[posToIndex(position)] == cellType;
+}
+
+bool Grid::randomEmptyPosition(Position& position) const
+{
+    const auto gridSize = c_dim.width * c_dim.height;
+    const uint32 index = FMath::RandRange(0, gridSize - 1);
+
+    for (uint32 i = index; i < gridSize; ++i)
+    {
+        if (m_cells[i] == CellType::Empty)
+        {
+            position = indexToPos(i);
+            return true;
+        }
+    }
+
+    for (uint32 i = 0; i < index; ++i)
+    {
+        if (m_cells[i] == CellType::Empty)
+        {
+            position = indexToPos(i);
+            return true;
+        }
+    }
+
+    return false;
 }
 
 uint32 Grid::posToIndex(uint32 x, uint32 y) const
@@ -100,4 +138,9 @@ uint32 Grid::posToIndex(uint32 x, uint32 y) const
 uint32 Grid::posToIndex(const Position& position) const
 {
     return posToIndex(position.x, position.y);
+}
+
+Position Grid::indexToPos(uint32 index) const
+{
+    return Position(index % c_dim.width, index / c_dim.width);
 }

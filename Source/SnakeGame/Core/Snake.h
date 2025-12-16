@@ -14,12 +14,12 @@ public:
 
     const TSnakeList& links() const { return m_links; }
     const Position& head() const { return m_links.GetHead()->GetValue(); }
-    const TPositionPtr* body() const { return m_links.GetHead()->GetNextNode(); }
 
     void move(const Input& input);
+    void increase();
 
 private:
     TSnakeList m_links;
-    Input m_lastInput{1, 0};
+    Input m_lastInput{Input::Default};
 };
 }  // namespace SnakeGame
