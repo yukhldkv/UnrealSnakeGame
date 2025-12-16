@@ -26,6 +26,8 @@ struct Position
         return *this;
     }
 
+    FORCEINLINE bool operator==(const Position& rhs) const { return x == rhs.x && y == rhs.y; }
+
     static const Position Zero;
 };
 

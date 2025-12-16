@@ -28,7 +28,6 @@ public:
     TSharedPtr<Food> food() const { return m_food; }
 
     void update(float deltaSeconds, const Input& input);
-    void move(const Input& input);
 
 private:
     const Settings c_settings;

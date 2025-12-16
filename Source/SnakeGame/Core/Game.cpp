@@ -24,7 +24,9 @@ Game::Game(const Settings& settings) : c_settings(settings)
 void Game::update(float deltaSeconds, const Input& input)
 {
     if (m_gameOver || !updateTime(deltaSeconds)) return;
-    move(input);
+
+    m_snake->move(input);
+
     if (died())
     {
         m_gameOver = true;
@@ -39,17 +41,13 @@ void Game::update(float deltaSeconds, const Input& input)
         m_snake->increase();
         generateFood();
     }
-}
 
-void Game::move(const Input& input)
-{
-    m_snake->move(input);
     updateGrid();
 }
 
 void Game::updateGrid()
 {
-    m_grid->update(m_snake->body(), CellType::Snake);
+    m_grid->update(m_snake->links().GetHead(), CellType::Snake);
     m_grid->printDebug();
 }
 
