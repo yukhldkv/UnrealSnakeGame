@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SnakeGame/Containers/List.h"
 
 namespace SnakeGame
 {
@@ -64,17 +65,7 @@ struct Settings
     float gameSpeed{1.0f};
 };
 
-using TPositionPtr = TDoubleLinkedList<Position>::TDoubleLinkedListNode;
-
-class TSnakeList : public TDoubleLinkedList<Position>
-{
-public:
-    void Movetail(TPositionPtr* Tail, TPositionPtr* Head, const Position& Pos)
-    {
-        // @todo: make real movement of tail node without remove/insert
-        RemoveNode(Tail);
-        InsertNode(Pos, Head->GetNextNode());
-    }
-};
+using TSnakeList = TDoubleLinkedList<Position>;
+using TPositionPtr = TSnakeList::TDoubleLinkedListNode;
 
 }  // namespace SnakeGame
