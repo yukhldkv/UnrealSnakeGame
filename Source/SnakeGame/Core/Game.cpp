@@ -30,8 +30,7 @@ void Game::update(float deltaSeconds, const Input& input)
     if (died())
     {
         m_gameOver = true;
-        UE_LOG(LogGame, Display, TEXT("------------------ GAME OVER ------------------"));
-        UE_LOG(LogGame, Display, TEXT("------------------ SCORE: %i------------------"), m_score);
+        m_gameplayEventCallback(GameplayEvent::GameOver);
         return;
     }
 
@@ -39,6 +38,7 @@ void Game::update(float deltaSeconds, const Input& input)
     {
         ++m_score;
         m_snake->increase();
+        m_gameplayEventCallback(GameplayEvent::FoodTaken);
         generateFood();
     }
 
@@ -48,7 +48,7 @@ void Game::update(float deltaSeconds, const Input& input)
 void Game::updateGrid()
 {
     m_grid->update(m_snake->links().GetHead(), CellType::Snake);
-    m_grid->printDebug();
+    // m_grid->printDebug();
 }
 
 bool Game::updateTime(float deltaSeconds)
@@ -76,13 +76,17 @@ void SnakeGame::Game::generateFood()
     }
     else
     {
+        m_gameplayEventCallback(GameplayEvent::GameCompleted);
         m_gameOver = true;
-        UE_LOG(LogGame, Display, TEXT("------------------ GAME COMPLETED ------------------"));
-        UE_LOG(LogGame, Display, TEXT("------------------ SCORE: %i------------------"), m_score);
     }
 }
 
 bool SnakeGame::Game::foodTaken() const
 {
     return m_grid->hitTest(m_snake->head(), CellType::Food);
+}
+
+void Game::subscribeOnGameplayEvent(GameplayEventCallback callback) 
+{
+    m_gameplayEventCallback = callback;
 }

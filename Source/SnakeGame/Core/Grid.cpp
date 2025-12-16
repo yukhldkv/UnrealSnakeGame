@@ -21,7 +21,7 @@ Grid::Grid(const Dim& dim)  //
 
     m_cells.Init(CellType::Empty, c_dim.height * c_dim.width);
     initWalls();
-    printDebug();
+    // printDebug();
 }
 
 void Grid::initWalls()
