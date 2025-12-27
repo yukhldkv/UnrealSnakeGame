@@ -86,7 +86,7 @@ bool SnakeGame::Game::foodTaken() const
     return m_grid->hitTest(m_snake->head(), CellType::Food);
 }
 
-void Game::subscribeOnGameplayEvent(GameplayEventCallback callback) 
+void Game::subscribeOnGameplayEvent(GameplayEventCallback callback)
 {
     m_gameplayEventCallback = callback;
 }
