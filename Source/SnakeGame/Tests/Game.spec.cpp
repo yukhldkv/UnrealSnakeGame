@@ -58,6 +58,67 @@ void FSnakeGame::Define()
                     TestTrueExpr(bGameOver);
                 });
         });
+
+    Describe("Core.Game",
+        [this]()
+        {
+            It("FoodCanBeTaken",
+                [this]()
+                {
+                    class MockPositionRandomizer : public IPositionRandomizer
+                    {
+                    public:
+                        virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) override
+                        {
+                            position = m_positions[m_index++];
+                            return true;
+                        }
+
+                        void setPositions(const TArray<Position>& positions)
+                        {
+                            m_positions = positions;
+                            m_index = 0;
+                        }
+
+                    private:
+                        TArray<Position> m_positions;
+                        int32 m_index{0};
+                    };
+
+                    auto Randomizer = MakeShared<MockPositionRandomizer>();
+                    Randomizer->setPositions({Position{7, 6}, Position{9, 6}, Position::Zero});
+
+                    GS.gridDims = {10, 10};
+                    GS.snake.startPosition = Grid::center(GS.gridDims.width, GS.gridDims.height);
+                    GS.gameSpeed = 1.0f;
+                    CoreGame = MakeUnique<Game>(GS, Randomizer);
+
+                    uint32 Score{0};
+                    CoreGame->subscribeOnGameplayEvent(
+                        [&Score](GameplayEvent Event)
+                        {
+                            if (Event == GameplayEvent::FoodTaken)
+                            {
+                                ++Score;
+                            }
+                        });
+
+                    TestTrueExpr(CoreGame->score() == 0);
+                    TestTrueExpr(Score == 0);
+
+                    CoreGame->update(1.0f, Input::Default);
+                    TestTrueExpr(CoreGame->score() == 1);
+                    TestTrueExpr(Score == 1);
+
+                    CoreGame->update(1.0f, Input::Default);
+                    TestTrueExpr(CoreGame->score() == 1);
+                    TestTrueExpr(Score == 1);
+
+                    CoreGame->update(1.0f, Input::Default);
+                    TestTrueExpr(CoreGame->score() == 2);
+                    TestTrueExpr(Score == 2);
+                });
+        });
 }
 
 #endif

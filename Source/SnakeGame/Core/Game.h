@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Types.h"
+#include "Utils.h"
 
 namespace SnakeGame
 {
@@ -15,7 +16,7 @@ class Food;
 class Game
 {
 public:
-    Game(const Settings& settings);
+    Game(const Settings& settings, const TSharedPtr<IPositionRandomizer>& randomizer = MakeShared<PositionRandomizer>());
 
     /**
      * Returns the pointer to the grid object

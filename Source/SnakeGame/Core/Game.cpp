@@ -9,9 +9,9 @@ DEFINE_LOG_CATEGORY_STATIC(LogGame, All, All)
 
 using namespace SnakeGame;
 
-Game::Game(const Settings& settings) : c_settings(settings)
+Game::Game(const Settings& settings, const TSharedPtr<IPositionRandomizer>& randomizer) : c_settings(settings)
 {
-    m_grid = MakeShared<Grid>(settings.gridDims);
+    m_grid = MakeShared<Grid>(settings.gridDims, randomizer);
     checkf(m_grid->dim().width / 2 >= settings.snake.defaultSize, TEXT("Snake initial length [%i] doesn't fit grid width [%i]"),
         settings.snake.defaultSize, m_grid->dim().width);
     m_snake = MakeShared<Snake>(settings.snake);
