@@ -12,6 +12,7 @@ using namespace SnakeGame;
 BEGIN_DEFINE_SPEC(
     FSnakeGame, "Snake", EAutomationTestFlags::EditorContext | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::HighPriority)
 TUniquePtr<Game> CoreGame;
+Settings GS;
 END_DEFINE_SPEC(FSnakeGame)
 
 void FSnakeGame::Define()
@@ -23,15 +24,39 @@ void FSnakeGame::Define()
             BeforeEach(
                 [this]()
                 {
-                    Settings GS;
                     GS.gridDims = {10, 10};
                     GS.snake.startPosition = Grid::center(GS.gridDims.width, GS.gridDims.height);
+                    GS.gameSpeed = 1.0f;
                     CoreGame = MakeUnique<Game>(GS);
                 });
 
             It("GridMightExist", [this]() { TestTrueExpr(CoreGame->grid().IsValid()); });
             It("SnakeMightExist", [this]() { TestTrueExpr(CoreGame->snake().IsValid()); });
             It("FoodMightExist", [this]() { TestTrueExpr(CoreGame->food().IsValid()); });
+
+            It("GameCanBeOver",
+                [this]()
+                {
+                    bool bGameOver{false};
+                    CoreGame->subscribeOnGameplayEvent(
+                        [&bGameOver](GameplayEvent Event)
+                        {
+                            if (Event == GameplayEvent::GameOver)
+                            {
+                                bGameOver = true;
+                            }
+                        });
+
+                    const int32 Moves = FMath::RoundToInt(GS.gridDims.width / 2.0f) - 1;
+                    for (int32 i = 0; i < Moves; ++i)
+                    {
+                        CoreGame->update(1.0f, Input::Default);
+                        TestTrueExpr(!bGameOver);
+                    }
+
+                    CoreGame->update(1.0f, Input::Default);
+                    TestTrueExpr(bGameOver);
+                });
         });
 }
 
