@@ -10,13 +10,15 @@ namespace SnakeGame
 class IPositionRandomizer
 {
 public:
-    virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) = 0;
+    virtual ~IPositionRandomizer() = default;
+
+    virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) const = 0;
 };
 
 class PositionRandomizer : public IPositionRandomizer
 {
 public:
-    virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) override
+    virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) const override
     {
         const auto gridSize = dim.width * dim.height;
         const uint32 index = FMath::RandRange(0, gridSize - 1);
@@ -42,7 +44,10 @@ public:
         return false;
     }
 
+private:
     FORCEINLINE Position indexToPos(uint32 index, const Dim& dim) const { return Position(index % dim.width, index / dim.width); }
 };
+
+using IPositionRandomizerPtr = TSharedPtr<IPositionRandomizer>;
 
 }  // namespace SnakeGame

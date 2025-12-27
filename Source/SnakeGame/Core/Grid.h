@@ -11,7 +11,7 @@ namespace SnakeGame
 class Grid
 {
 public:
-    Grid(const Dim& dim, const TSharedPtr<IPositionRandomizer>& randomizer = MakeShared<PositionRandomizer>());
+    Grid(const Dim& dim, const IPositionRandomizerPtr& randomizer = MakeShared<PositionRandomizer>());
 
     /**
      * Returns grid dimensions including walls (width + 2, height + 2)

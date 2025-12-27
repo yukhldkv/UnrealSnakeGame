@@ -15,6 +15,26 @@ TUniquePtr<Game> CoreGame;
 Settings GS;
 END_DEFINE_SPEC(FSnakeGame)
 
+class MockPositionRandomizer : public IPositionRandomizer
+{
+public:
+    virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) const override
+    {
+        position = m_positions[m_index++];
+        return true;
+    }
+
+    void setPositions(const TArray<Position>& positions)
+    {
+        m_positions = positions;
+        m_index = 0;
+    }
+
+private:
+    TArray<Position> m_positions;
+    mutable int32 m_index{0};
+};
+
 void FSnakeGame::Define()
 {
 
@@ -65,26 +85,6 @@ void FSnakeGame::Define()
             It("FoodCanBeTaken",
                 [this]()
                 {
-                    class MockPositionRandomizer : public IPositionRandomizer
-                    {
-                    public:
-                        virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) override
-                        {
-                            position = m_positions[m_index++];
-                            return true;
-                        }
-
-                        void setPositions(const TArray<Position>& positions)
-                        {
-                            m_positions = positions;
-                            m_index = 0;
-                        }
-
-                    private:
-                        TArray<Position> m_positions;
-                        int32 m_index{0};
-                    };
-
                     auto Randomizer = MakeShared<MockPositionRandomizer>();
                     Randomizer->setPositions({Position{7, 6}, Position{9, 6}, Position::Zero});
 

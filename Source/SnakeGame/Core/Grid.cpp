@@ -8,7 +8,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogGrid, All, All)
 
 using namespace SnakeGame;
 
-Grid::Grid(const Dim& dim, const TSharedPtr<IPositionRandomizer>& randomizer)  //
+Grid::Grid(const Dim& dim, const IPositionRandomizerPtr& randomizer)  //
     : c_dim(Dim{dim.width + 2, dim.height + 2}), m_positionRandomizer(randomizer)
 {
     /*
