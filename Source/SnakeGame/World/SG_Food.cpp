@@ -49,7 +49,7 @@ void ASG_Food::Explode()
 {
     if (UNiagaraComponent* NS = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionEffect, GetFoodWorldLocation()))
     {
-        NS->SetNiagaraVariableLinearColor("SnakeColor", FoodColor);
+        NS->SetVariableLinearColor(FName("SnakeColor"), FoodColor);
     }
 }
 
