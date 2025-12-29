@@ -59,7 +59,7 @@ FVector ASG_Food::GetFoodWorldLocation() const
     return SnakeGame::WorldUtils::LinkPositionToVector(Food.Pin()->position(), CellSize, Dims);
 }
 
-void ASG_Food::Hide() 
+void ASG_Food::Hide()
 {
     SetActorHiddenInGame(true);
 }
