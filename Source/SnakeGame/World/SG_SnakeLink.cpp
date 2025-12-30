@@ -37,7 +37,7 @@ void ASG_SnakeLink::Explode()
 {
     if (UNiagaraComponent* NS = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionEffect, GetActorLocation()))
     {
-        NS->SetNiagaraVariableLinearColor("SnakeColor", LinkColor);
+        NS->SetVariableLinearColor(FName("SnakeColor"), LinkColor);
     }
     SetActorHiddenInGame(true);
 }

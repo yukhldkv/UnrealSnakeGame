@@ -22,6 +22,8 @@ public:
     void UpdateColors(const FLinearColor& Color);
     void Explode();
 
+    void Hide();
+
     FVector GetFoodWorldLocation() const;
 
 protected:
