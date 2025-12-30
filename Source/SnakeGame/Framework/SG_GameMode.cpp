@@ -77,7 +77,7 @@ void ASG_GameMode::StartPlay()
     HUD = Cast<ASG_HUD>(PC->GetHUD());
     check(HUD);
     HUD->SetModel(Game);
-    
+
     const FString ResetKeyName = SnakeGame::WorldUtils::FindActionKeyName(InputMapping, ResetInputAction);
     HUD->SetInputKeyNames(ResetKeyName);
 }

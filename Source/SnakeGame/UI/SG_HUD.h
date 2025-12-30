@@ -10,7 +10,7 @@ class USG_GameplayWidget;
 class USG_GameOverWidget;
 
 UENUM()
-enum class EUIMatchState : uint8
+enum class EUIGameState : uint8
 {
     StartGame = 0,
     GameInProgress,
@@ -51,13 +51,13 @@ private:
     TObjectPtr<USG_GameOverWidget> GameOverWidget;
 
     UPROPERTY()
-    TMap<EUIMatchState, TObjectPtr<UUserWidget>> GameWidgets;
+    TMap<EUIGameState, TObjectPtr<UUserWidget>> GameWidgets;
 
     UPROPERTY()
     TObjectPtr<UUserWidget> CurrentWidget;
 
     TWeakPtr<SnakeGame::Game> Game;
-    EUIMatchState MatchState;
+    EUIGameState MatchState;
 
-    void SetUIMatchState(EUIMatchState InMatchState);
+    void SetUIMatchState(EUIGameState InMatchState);
 };
