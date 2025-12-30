@@ -12,11 +12,15 @@ UCLASS()
 class SNAKEGAME_API USG_GameOverWidget : public UUserWidget
 {
     GENERATED_BODY()
-    
+
 protected:
     UPROPERTY(meta = (BindWidget))
     TObjectPtr<UTextBlock> ScoreText;
-    
+
+    UPROPERTY(meta = (BindWidget))
+    TObjectPtr<UTextBlock> ResetText;
+
 public:
-    void UpdateScore(uint32 Score);
+    void SetScore(uint32 Score);
+    void SetResetKeyName(const FString& ResetKeyName);
 };

@@ -12,10 +12,19 @@ void USG_GameplayWidget::SetGameTime(float Seconds)
     }
 }
 
-void USG_GameplayWidget::UpdateScore(uint32 Score)
+void USG_GameplayWidget::SetScore(uint32 Score)
 {
     if (ScoreText)
     {
         ScoreText->SetText(SnakeGame::WorldUtils::FormatScore(Score));
+    }
+}
+
+void USG_GameplayWidget::SetResetKeyName(const FString& ResetKeyName)
+{
+    if (ResetText)
+    {
+        const FString ResetInfo = FString::Printf(TEXT("press <%s> to reset"), *ResetKeyName.ToLower());
+        ResetText->SetText(FText::FromString(ResetInfo));
     }
 }

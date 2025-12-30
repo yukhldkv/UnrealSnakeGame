@@ -46,8 +46,8 @@ void ASG_HUD::SetModel(const TSharedPtr<SnakeGame::Game>& InGame)
     Game = InGame;
 
     SetUIMatchState(EUIMatchState::GameInProgress);
-    GameplayWidget->UpdateScore(InGame->score());
-    GameOverWidget->UpdateScore(InGame->score());
+    GameplayWidget->SetScore(InGame->score());
+    GameOverWidget->SetScore(InGame->score());
 
     InGame->subscribeOnGameplayEvent(
         [&](GameplayEvent Event)
@@ -55,15 +55,21 @@ void ASG_HUD::SetModel(const TSharedPtr<SnakeGame::Game>& InGame)
             switch (Event)
             {
                 case GameplayEvent::FoodTaken:  //
-                    GameplayWidget->UpdateScore(InGame->score());
+                    GameplayWidget->SetScore(InGame->score());
                     break;
 
                 case GameplayEvent::GameOver:  //
-                    GameOverWidget->UpdateScore(InGame->score());
+                    GameOverWidget->SetScore(InGame->score());
                     SetUIMatchState(EUIMatchState::GameOver);
                     break;
             }
         });
+}
+
+void ASG_HUD::SetInputKeyNames(const FString& ResetKeyName)
+{
+    GameplayWidget->SetResetKeyName(ResetKeyName);
+    GameOverWidget->SetResetKeyName(ResetKeyName);
 }
 
 void ASG_HUD::SetUIMatchState(EUIMatchState InMatchState)
@@ -78,6 +84,6 @@ void ASG_HUD::SetUIMatchState(EUIMatchState InMatchState)
         CurrentWidget = GameWidgets[InMatchState];
         CurrentWidget->SetVisibility(ESlateVisibility::Visible);
     }
-    
+
     MatchState = InMatchState;
 }
