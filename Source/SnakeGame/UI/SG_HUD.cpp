@@ -11,18 +11,25 @@ void ASG_HUD::BeginPlay()
 
     GameplayWidget = CreateWidget<USG_GameplayWidget>(GetWorld(), GameplayWidgetClass);
     check(GameplayWidget);
-    GameplayWidget->AddToViewport();
-    GameplayWidget->SetVisibility(ESlateVisibility::Visible);
+    GameWidgets.Add(EUIMatchState::GameInProgress, GameplayWidget);
 
     GameOverWidget = CreateWidget<USG_GameOverWidget>(GetWorld(), GameOverWidgetClass);
     check(GameOverWidget);
-    GameOverWidget->AddToViewport();
-    GameOverWidget->SetVisibility(ESlateVisibility::Collapsed);
+    GameWidgets.Add(EUIMatchState::GameOver, GameOverWidget);
+
+    for (auto& [UIState, GameWidget] : GameWidgets)
+    {
+        if (GameWidget)
+        {
+            GameWidget->AddToViewport();
+            GameWidget->SetVisibility(ESlateVisibility::Collapsed);
+        }
+    }
 }
 
 void ASG_HUD::Tick(float DeltaSeconds)
 {
-    Super::Tick(DeltaSeconds);
+    Super::Tick(DeltaSeconds && MatchState == EUIMatchState::GameInProgress);
 
     if (Game.IsValid())
     {
@@ -34,14 +41,14 @@ void ASG_HUD::SetModel(const TSharedPtr<SnakeGame::Game>& InGame)
 {
     if (!InGame) return;
 
-    Game = InGame;
-    
-    GameplayWidget->SetVisibility(ESlateVisibility::Visible);
-    GameOverWidget->SetVisibility(ESlateVisibility::Collapsed);
-
-    GameplayWidget->UpdateScore(InGame->score());
-
     using namespace SnakeGame;
+
+    Game = InGame;
+
+    SetUIMatchState(EUIMatchState::GameInProgress);
+    GameplayWidget->UpdateScore(InGame->score());
+    GameOverWidget->UpdateScore(InGame->score());
+
     InGame->subscribeOnGameplayEvent(
         [&](GameplayEvent Event)
         {
@@ -50,11 +57,27 @@ void ASG_HUD::SetModel(const TSharedPtr<SnakeGame::Game>& InGame)
                 case GameplayEvent::FoodTaken:  //
                     GameplayWidget->UpdateScore(InGame->score());
                     break;
-                    
+
                 case GameplayEvent::GameOver:  //
-                    GameplayWidget->SetVisibility(ESlateVisibility::Collapsed);
-                    GameOverWidget->SetVisibility(ESlateVisibility::Visible);
+                    GameOverWidget->UpdateScore(InGame->score());
+                    SetUIMatchState(EUIMatchState::GameOver);
                     break;
             }
         });
+}
+
+void ASG_HUD::SetUIMatchState(EUIMatchState InMatchState)
+{
+    if (CurrentWidget)
+    {
+        CurrentWidget->SetVisibility(ESlateVisibility::Collapsed);
+    }
+
+    if (GameWidgets.Contains(InMatchState))
+    {
+        CurrentWidget = GameWidgets[InMatchState];
+        CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+    }
+    
+    MatchState = InMatchState;
 }
